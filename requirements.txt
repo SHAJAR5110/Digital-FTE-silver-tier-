@@ -1,0 +1,180 @@
+# Silver Tier Requirements
+# Multiple watchers + Email MCP + LinkedIn posting
+
+# Core Python
+python>=3.13
+
+# Gmail Watcher
+google-auth-oauthlib>=1.0.0
+google-auth-httplib2>=0.2.0
+google-api-python-client>=2.100.0
+
+# WhatsApp & LinkedIn Watchers (Browser Automation)
+playwright>=1.40.0
+
+# Email Sending (SMTP or Gmail API)
+secure-smtplib>=0.1.1  # OR use Gmail API via google-api-python-client
+
+# LinkedIn API (Optional - can use web scraping instead)
+# linkedin-api>=2.0.0
+
+# Utilities
+python-dotenv>=1.0.0
+pyyaml>=6.0
+requests>=2.31.0
+
+# Logging & Monitoring
+python-logging-loki>=0.3.2  # Optional: centralized logging
+
+# Development/Testing
+pytest>=7.4.0
+black>=23.0.0
+pylint>=2.17.0
+
+---
+
+# Installation
+
+## 1. Create Virtual Environment
+python3 -m venv venv
+source venv/bin/activate  # macOS/Linux
+# OR
+venv\Scripts\activate  # Windows
+
+## 2. Install Dependencies
+pip install -r requirements.txt
+
+## 3. Setup Credentials
+cp .env.example .env
+# Edit .env with your API keys:
+# - GMAIL_CLIENT_ID
+# - GMAIL_CLIENT_SECRET
+# - SMTP_PASSWORD (if using SMTP for email)
+# - LINKEDIN_EMAIL
+# - LINKEDIN_PASSWORD (or API token)
+
+## 4. Verify Installation
+python3 -c "import google.auth; print('Gmail auth OK')"
+python3 -c "from playwright import sync_playwright; print('Playwright OK')"
+
+---
+
+# Node.js Requirements (for MCP Servers)
+
+## Email MCP Server
+npm init
+npm install @anthropic-ai/sdk express
+
+## LinkedIn Posting MCP Server
+npm install @anthropic-ai/sdk express linkedin-api
+
+---
+
+# Python Version
+Requires Python 3.13+
+Tested on 3.13.0
+
+---
+
+# Optional Dependencies
+
+# For centralized logging:
+pip install python-logging-loki
+
+# For LinkedIn scraping (if not using API):
+pip install linkedin-api
+
+# For browser testing:
+pip install pytest-playwright
+
+---
+
+# First Time Setup
+
+1. Install Python dependencies:
+   pip install -r requirements.txt
+
+2. Setup Google OAuth for Gmail:
+   - Go to https://console.cloud.google.com/
+   - Create new project
+   - Enable Gmail API
+   - Create OAuth 2.0 credentials (Desktop app)
+   - Download credentials.json
+   - Save to ~/.secrets/gmail_credentials.json
+   - Add to .env: GMAIL_CREDENTIALS_PATH=~/.secrets/gmail_credentials.json
+
+3. Setup WhatsApp access:
+   - Option A: Use Playwright with web.whatsapp.com (free)
+   - Option B: Use official WhatsApp Business API (paid)
+
+4. Setup LinkedIn:
+   - Option A: Use unofficial API (linkedin-api)
+   - Option B: Use Playwright web scraping
+   - Option C: Official LinkedIn API (requires business account)
+
+5. Setup Email Sending:
+   - Option A: Gmail API (recommended)
+   - Option B: SMTP (any email provider)
+   - Get credentials and add to .env
+
+---
+
+# Environment Variables (.env file)
+
+```
+# Gmail
+GMAIL_CREDENTIALS_PATH=~/.secrets/gmail_credentials.json
+
+# Email Sending
+EMAIL_PROVIDER=gmail  # OR smtp
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_EMAIL=your_email@gmail.com
+SMTP_PASSWORD=your_app_password
+
+# LinkedIn (if using unofficial API)
+LINKEDIN_EMAIL=your_email@example.com
+LINKEDIN_PASSWORD=your_password
+
+# WhatsApp (if using unofficial API)
+WHATSAPP_SESSION_PATH=~/.secrets/whatsapp_session
+
+# Vault
+VAULT_PATH=/path/to/AI_Employee_Vault
+
+# Scheduling
+CLAUDE_RUN_INTERVAL=1800  # 30 minutes in seconds
+```
+
+NEVER commit .env file to git!
+
+---
+
+# Troubleshooting
+
+## Gmail Auth Error
+- Verify credentials.json in correct path
+- Check permissions in Google Cloud Console
+- Re-authenticate if needed
+
+## Playwright Timeout
+- Chrome might be slow on first run
+- Increase timeout in whatsapp_watcher.py
+- Ensure 2GB+ RAM available
+
+## LinkedIn Login Failed
+- Session might be expired
+- Clear session files and re-login
+- Check if account has 2FA enabled
+
+## Email Send Failed
+- Verify SMTP credentials
+- Check firewall allowing port 587
+- Less secure apps might need enabling (Gmail)
+
+---
+
+# Version Lock (After Installation)
+
+pip freeze > requirements-lock.txt
+# Use this to ensure reproducible builds

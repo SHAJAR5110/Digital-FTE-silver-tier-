@@ -1,0 +1,26 @@
+{
+  "name": "linkedin-posting-mcp",
+  "version": "1.0.0",
+  "description": "LinkedIn Posting MCP Server for Digital FTE",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": ["mcp", "linkedin", "digital-fte"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.20.0",
+    "express": "^4.18.0",
+    "axios": "^1.6.0",
+    "dotenv": "^16.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=24.0.0",
+    "npm": ">=10.0.0"
+  }
+}
